@@ -12,9 +12,12 @@ header.h => LINE 31 : added depth argument in buildDecisionTree
 functions.cpp 
 
 => LINE 86 : hardCoded maxDepth as 3
+
 => Can take it as a command line argument.
 
+
 => LINE 323 : hardCoded length of data instances as 200
+
 => Will need a variable to count total instances.
               
 decisionTree.cpp => LINE 73 : Added Printing statement to see the decision tree.
