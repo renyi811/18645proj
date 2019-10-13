@@ -1,5 +1,5 @@
 #include "fast_code_utils.h"
-#include "functions.cpp"
+#include "header.h"
 
 int main(int argc, const char *argv[])
 {	
