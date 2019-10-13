@@ -1,5 +1,6 @@
 #include "header.h"
 
+int MAX_DEPTH = -1;
 /* 
  * Parses a string and stores data
  * into a vector of vector of strings
@@ -83,8 +84,10 @@ node* buildDecisionTree(vvs &table, node* nodePtr, vvs &tableInfo, int depth)
 	if (tableIsEmpty(table)) {
 		return NULL;
 	}
-	if (depth > 3) {
-		return NULL;
+	if (depth == MAX_DEPTH) {
+		nodePtr->isLeaf = true;
+		nodePtr->label = table[1][table[1].size()-1];
+		return nodePtr;
 	}
 	if (isHomogeneous(table)) {
 		nodePtr->isLeaf = true;
