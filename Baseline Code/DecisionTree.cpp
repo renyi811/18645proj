@@ -1,7 +1,13 @@
+#include "fast_code_utils.h"
 #include "functions.cpp"
 
 int main(int argc, const char *argv[])
-{
+{	
+	unsigned long long st1;
+	unsigned long long et1; 
+	unsigned long long st2;
+	unsigned long long et2;
+	
 	ifstream inputFile;												// Input file stream
 	string singleInstance;											// Single line read from the input file 
 	vvs dataTable;													// Input data in the form of a vector of vector of strings
@@ -30,8 +36,12 @@ int main(int argc, const char *argv[])
 	}
 	inputFile.close(); 												// Close input file
 	vvs tableInfo = generateTableInfo(dataTable);					// Stores all the attributes and their values in a vector of vector of strings named tableInfo
+	
+	st1 = rdtsc();
 	node* root = new node;											// Declare and assign memory for the root node of the Decision Tree
 	root = buildDecisionTree(dataTable, root, tableInfo, 0);			// Recursively build and train decision tree
+	et1 = rdtsc() - st1;
+	
 	string defaultClass = returnMostFrequentClass(dataTable);		// Stores the most frequent class in the training data. This is used as the default class label
 	dataTable.clear(); 												// clear dataTable of training data to store testing data
 
@@ -62,15 +72,19 @@ int main(int argc, const char *argv[])
 		string data = dataTable[iii][dataTable[0].size()-1];
 		givenClassLabels.push_back(data);
 	}
+	st2 = rdtsc();
 	for (int iii = 1; iii < dataTable.size(); iii++)				// Predict class labels based on the decision tree
 	{
 		string someString = testDataOnDecisionTree(dataTable[iii], root, tableInfo, defaultClass);
 		predictedClassLabels.push_back(someString);
 	}
 	dataTable.clear();
+	et2 = rdtsc() - st2;
+	
+	cout << "Time taken to train tree = " << et1 << endl;
+	cout << "Time taken to test tree = " << et2 << endl;
 
 	/* Print output */
-	printDecisionTree(root);
 	ofstream outputFile;
 	outputFile.open("decisionTreeOutput.txt", ios::app);
 	outputFile << endl << "--------------------------------------------------" << endl;
